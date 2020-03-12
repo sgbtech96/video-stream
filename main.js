@@ -33,7 +33,7 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
 app.get('/see', async (req, res) => {
 	const img = await imgs.findOne({})
 	res.set('Content-Type', 'image/png')
-	res.send(img)
+	res.send(img.num)
 })
 
 app.listen(port, () => {
