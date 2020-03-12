@@ -23,7 +23,7 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
 	const img = new imgs()
 	img.num = req.file.buffer
 	await img.save()
-	res.send()
+	res.send('')
 },(error, req, res, next) => {
 	res.status(400).send({ error: error.message })
 })
