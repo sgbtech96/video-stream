@@ -22,7 +22,6 @@ const upload = multer({
 app.post('/upload', upload.single('upload'), async (req, res) => {
 	const img = new imgs()
 	img.num = req.file.buffer
-	console.log(img)
 	await img.save()
 	res.send()
 },(error, req, res, next) => {
