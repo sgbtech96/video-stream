@@ -1,6 +1,7 @@
 const express = require('express')
 const multer = require('multer')
 const sharp = require('sharp')
+var Jimp = require('jimp')
 const app = express()
 const imgs = require('./imgs')
 require('./db')
@@ -32,11 +33,25 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
 
 app.get('/see', async (req, res) => {
 	const img = await imgs.find({})
-	res.set('Content-Type', 'image/png')
-
+	var a = 0
 	img.forEach((i) => {
-		res.send(i.num)
+		a += 1
+		const pixelSize = 256
+		var image = new Jimp(pixelSize, pixelSize, function (err, image) {
+	    let buffer = i.num
+	    for (var x = 0; x < pixelSize; x++) {
+	      	for (var y = 0; y < pixelSize; y++) {
+			      const offset = (y * pixelSize + x) * 4 // RGBA = 4 bytes
+			      buffer[offset    ] = x    // R
+			      buffer[offset + 1] = y    // G
+			      buffer[offset + 2] = 0    // B
+			      buffer[offset + 3] = 255  // Alpha
+	   		 }
+	  	}
 	})
+	image.write('/frames/pic' + a +'.png')
+	})
+	
 })
 
 app.listen(port, () => {
