@@ -1,7 +1,7 @@
 const express = require('express')
 const multer = require('multer')
 const sharp = require('sharp')
-var Jimp = require('jimp')
+const mongoose = require('mongoose')
 const app = express()
 const imgs = require('./imgs')
 require('./db')
@@ -31,8 +31,9 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
 	res.status(400).send({ error: error.message })
 })
 
-app.get('/see', (req, res) => {
-	const img = imgs.find({})
+app.get('/see', async (req, res) => {
+	const img =  await imgs.find({})
+	console.log(img)
 	res.send(img)
 })
 
