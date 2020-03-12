@@ -31,9 +31,12 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
 })
 
 app.get('/see', async (req, res) => {
-	const img = await imgs.findOne({})
+	const img = await imgs.find({})
 	res.set('Content-Type', 'image/png')
-	res.send(img.num)
+
+	img.forEach((i) => {
+		res.send(i.num)
+	})
 })
 
 app.listen(port, () => {
