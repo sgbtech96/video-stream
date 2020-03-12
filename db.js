@@ -1,6 +1,8 @@
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1:27017/aaryan', {
-	useNewUrlParser: true,
-	useCreateIndex: true
-})
-console.log('Connected to db')
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://sgbtech96:nptel@92@cluster0-hluvl.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true });
+client.connect(err => {
+  const collection = client.db("test").collection("imgs");
+  // perform actions on the collection object
+  client.close();
+});
