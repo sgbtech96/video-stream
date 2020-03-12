@@ -1,5 +1,6 @@
 const express = require('express')
 const multer = require('multer')
+const sharp = require('sharp')
 const app = express()
 const imgs = require('./imgs')
 require('./db')
@@ -21,11 +22,20 @@ const upload = multer({
 
 app.post('/upload', upload.single('upload'), async (req, res) => {
 	const img = new imgs()
-	img.num = req.file.buffer
+	const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
+	img.num = buffer
 	await img.save()
 	res.send('')
 },(error, req, res, next) => {
 	res.status(400).send({ error: error.message })
+})
+
+app.get('/see', async (req, res) => {
+	const img = await imgs.find({})
+	res.set('Content-Type', 'image/png')
+	img.forEach((i) => {
+		res.send(i)
+	})
 })
 
 app.listen(port, () => {
